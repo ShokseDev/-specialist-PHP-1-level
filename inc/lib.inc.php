@@ -42,3 +42,33 @@ function drawMenu($menu, $vertical = true): void
 
     echo "</ul>";
 }
+
+function calculator($num1, $num2, $operator): void {
+
+    echo "<p>";
+
+    switch ($operator) {
+        case '+':
+            $sum = $num1 + $num2;
+            echo "Результат $num1 + $num2 = $sum";
+            break;
+        case '-':
+            $sum = $num1 - $num2;
+            echo "Результат $num1 - $num2 = $sum";
+            break;
+        case '*':
+            $sum = $num1 * $num2;
+            echo "Результат $num1 * $num2 = $sum";
+            break;
+        case '/':
+            if ($num2 != 0) {
+                $sum = $num1 / $num2;
+                echo "Результат $num1 / $num2 = $sum";
+                break;
+            } else {
+                echo "На ноль делить нельзя!";
+            }
+    }
+
+    echo "</p>";
+}
