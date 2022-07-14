@@ -1,56 +1,39 @@
 <?php
 
-function drawMenu($menu, $vertical = true): void
-{
-    $style = "";
+error_reporting(0);
 
-    if (!$vertical) {
-        $style = "style = 'display: inline; margin-right: 15px'";
-    }
+include "inc/data.inc.php";
+include "inc/lib.inc.php";
 
-    echo "<ul>";
-
-    foreach ($menu as $item) {
-        echo "<li $style>";
-        echo "<a href='$item[href]'>$item[link]</a>";
-        echo "</li>";
-    }
-
-    echo "</ul>";
+$title = 'Сайт нашей школы';
+$header = "$welcome, Гость!";
+$id = strtolower(strip_tags(trim($_GET['id'])));
+switch($id) {
+    case 'about':
+        $title = 'О сайте';
+        $header = 'О нашем сайте';
+        break;
+    case 'contact':
+        $title = 'Контакты';
+        $header = 'Обратная связь';
+        break;
+    case 'table':
+        $title = 'Таблица умножения';
+        $header = 'Таблица умножения';
+        break;
+    case 'calc':
+        $title = 'Он-лайн калькулятор';
+        $header = 'Калькулятор';
+        break;
 }
 
-$leftMenu = [
-    ['link' => 'Домой', 'href' => 'index.php'],
-    ['link' => 'О нас', 'href' => 'about.php'],
-    ['link' => 'Контакты', 'href' => 'contact.php'],
-    ['link' => 'Таблица умножения', 'href' => 'table.php'],
-    ['link' => 'Калькулятор', 'href' => 'calc.php']
-];
-
-$months = array(1 => 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря');
-date_default_timezone_set("Europe/Moscow");
-$day = date("j");
-$month = $months[date('n')];
-$year = date("Y");
-
-$hour = (int)date('H');
-$welcome = '';
-
-if ($hour > 0 && $hour < 6) {
-    $welcome = "Доброй ночи";
-} elseif ($hour >= 6 && $hour < 12) {
-    $welcome = "Доброе утро";
-} elseif ($hour >= 12 && $hour < 18) {
-    $welcome = "Добрый день";
-} else {
-    $welcome = "Добрый вечер";
-}
 ?>
+
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Сайт нашей школы</title>
+    <title><?= $title ?></title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="style.css"/>
 </head>
@@ -59,56 +42,48 @@ if ($hour > 0 && $hour < 6) {
 
 <div id="header">
     <!-- Верхняя часть страницы -->
-    <img src="logo.gif" width="187" height="29" alt="Наш логотип" class="logo"/>
-    <span class="slogan">приходите к нам учиться</span>
+    <?php
+    include "inc/top.inc.php";
+    ?>
     <!-- Верхняя часть страницы -->
 </div>
 
 <div id="content">
     <!-- Заголовок -->
-    <h1><?= $welcome ?>, Гость</h1>
+    <h1><?= $header ?></h1>
     <!-- Заголовок -->
     <blockquote>
         <?= "Сегодня $day $month $year года" ?>
     </blockquote>
     <!-- Область основного контента -->
-    <h3>Зачем мы ходим в школу?</h3>
-    <p>
-        У нас каждую минуту что-то происходит и кипит жизнь. Проходят уроки и шумят перемены, кто-то отвечает у доски,
-        кто-то отчаянно зубрит перед контрольной пройденный материал, кому-то ставят «пятерку» за сочинение, кого-то
-        ругают за непрочитанную книгу, на школьной спортивной площадке ребята играют в футбол, а девочки – в волейбол,
-        некоторые готовятся к соревнованиям, другие участвуют в репетициях праздников…
-    </p>
-    <h3>Что такое ЕГЭ?</h3>
-    <p>
-        Аббревиатура ЕГЭ расшифровывается как "Единый Государственный Экзамен". Почему "единый"? ЕГЭ одновременно
-        является и вступительным экзаменом в ВУЗ и итоговой оценкой каждого выпускника школы. К тому же на всей
-        территории России используются однотипные задания и единая система оценки.
-    </p>
-    <p>
-        Результаты ЕГЭ оцениваются по 100-балльной и пятибалльной системам и заносятся в свидетельство о результатах
-        единого государственного экзамена. Срок действия данного документа истекает 31 декабря года, следующего за годом
-        его выдачи, поэтому у абитуриентов есть возможность поступать в ВУЗы со свидетельством ЕГЭ в течение двух лет.
-    </p>
+    <?php
+    switch($id){
+        case 'about':
+            include 'about.php'; break;
+        case 'contact':
+            include 'contact.php'; break;
+        case 'table':
+            include 'table.php'; break;
+        case 'calc':
+            include 'calc.php'; break;
+        default:
+            include 'inc/index.inc.php';
+    }
+    ?>
     <!-- Область основного контента -->
 </div>
 <div id="nav">
     <!-- Навигация -->
-    <h2>Навигация по сайту</h2>
-    <!-- Меню -->
     <?php
-    drawMenu($leftMenu);
+    include "inc/menu.inc.php";
     ?>
-    <!-- Меню -->
     <!-- Навигация -->
 </div>
 <div id="footer">
     <!-- Нижняя часть страницы -->
     <?php
-    drawMenu($leftMenu, false);
+    include "inc/bottom.inc.php";
     ?>
-    <hr>
-    &copy; Супер Мега Веб-мастер, 2000 &ndash; <?= $year ?>
     <!-- Нижняя часть страницы -->
 </div>
 </body>
